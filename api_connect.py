@@ -15,7 +15,7 @@ class BearerAuth(requests.auth.AuthBase):
         r.headers["authorization"] = "Bearer " + self.token
         return r
 
-
+#edit
 class API_Connect():
     simplified = '1'
     token = "WJe_wI2r9-dtJsR83i77yQgKo3bsnqStOP6Xf604Y6JRTzd3D0jLsg0ZaGSwUeCaUBMFR1MWHgGwGjXN"
