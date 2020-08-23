@@ -244,7 +244,7 @@ class API_Connect():
         return hour_above_threshold  #returns an integer for one day
 
     #Simplified Mode Item No. 8 - 11
-    def ped_xing_approaches(self, result):
+    def sim_ped_xing_approaches(self, result):
         all_approach_sum = {}
         most_used_approach = {}
         least_used_approach = {}
