@@ -8,15 +8,20 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_MainWindow(object):
+class Ui_MainWindow():
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(711, 1063)
+
+        self.mainwindow = MainWindow
+
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+
         self.gridLayout_2 = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout_2.setSpacing(5)
         self.gridLayout_2.setObjectName("gridLayout_2")
+
         self.scrollArea = QtWidgets.QScrollArea(self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(1)
@@ -258,9 +263,13 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+        # self.Step1toolButtonLayout1.clicked.connect(self.step1_1clicked)
+        # self.Step1toolButtonLayout2.clicked.connect(self.step1_2clicked)
+        self.Step8pushButtonConfirmQuery.clicked.connect(self.step8clicked)
+        
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -315,146 +324,146 @@ class Ui_MainWindow(object):
         self.Step3d1Label.setText(_translate("MainWindow", "Start Date: (inclusive)"))
         self.Step8pushButtonConfirmQuery.setText(_translate("MainWindow", "Confirm Query"))
         self.Step2radioButtonMode1.setText(_translate("MainWindow", "Summarized (Mode 1)"))
-
-    def run_pyqt_GUI (self):
-     #Step 1 Select Location (UDID) - defines udid
-        if ui.Step1radioButton1.isChecked()== True:
-            udid = 'BCT_3D_5G_0101001'
-        elif ui.Step1radioButton2.isChecked()== True:
-            udid = 'BCT_3D_5G_0101002'
-        print (udid)
-
-     #Step 2 Select Data Mode - defines mode
-        if ui.Step2radioButtonMode1.isChecked()== True:
-            mode = 1
-        elif ui.Step2radioButtonMode2.isChecked()== True:
-            mode = 2
-        
-     #Step 3 Enter Date and/or Time Range - defines d1,t1,d2,t2
-        d1 = ui.Step3d1Enter.text() #format: YYYY-MM-DD
-        t1 = ui.Step3t1Enter.text() #format: THH:MM:SS
-        d2 = ui.Step3d2Enter.text()
-        t2 = ui.Step3t2Enter.text()
-
-     #Step 4 Input Threshold - defines threshold
-        if ui.Step4thresholdEnter.text()=="":
-            threshold = 300
-        else:
-            threshold = int(ui.Step4thresholdEnter.text())
-        
-     #Step 5 Select Aggregation Interval (Mode 2 Only) - defines a
-        if ui.Step5radioButton1.isChecked()== True:
-            a=1
-        if ui.Step5radioButton2.isChecked()== True:
-            a=2
-        if ui.Step5radioButton3.isChecked()== True:
-            a=3
-        if ui.Step5radioButton4.isChecked()== True:
-            a=4
-
-     #Step 6 Select Output Items (Mode 2 Only) - defines f
-      #vehicle directions
-        #North
-        if ui.Step6checknw.isChecked()== True:
-            nw="nw"
-        else: nw=""
-
-        if ui.Step6checkne.isChecked()== True:
-            ne="ne"
-        else: ne=""
-
-        if ui.Step6checkns.isChecked()== True:
-            ns="ns"
-        else: ns=""
-        #South
-        if ui.Step6checksw.isChecked()== True:
-            sw="sw"
-        else: sw=""
-
-        if ui.Step6checkse.isChecked()== True:
-            se="se"
-        else: ne=""
-
-        if ui.Step6checksn.isChecked()== True:
-            sn="sn"
-        else: sn=""
-        #West
-        if ui.Step6checkwn.isChecked()== True:
-            wn="wn"
-        else: wn=""
-
-        if ui.Step6checkwe.isChecked()== True:
-            we="we"
-        else: we=""
-
-        if ui.Step6checkws.isChecked()== True:
-            ws="ws"
-        else: ws=""
-        #East
-        if ui.Step6checken.isChecked()== True:
-            en="en"
-        else: en=""
-
-        if ui.Step6checkew.isChecked()== True:
-            ew="ew"
-        else: ew=""
-
-        if ui.Step6checkes.isChecked()== True:
-            es="es"
-        else: es=""
-
-      #Pedestrian Directions
-        if ui.Step6checkpednlr.isChecked()== True:
-            nlr="nlr"
-        else: nlr=""
-
-        if ui.Step6checkpednrl.isChecked()== True:
-            nrl="nrl"
-        else: nrl=""
-        
-        if ui.Step6checkpedslr.isChecked()== True:
-            slr="slr"
-        else: slr=""
-
-        if ui.Step6checkpedsrl.isChecked()== True:
-            srl="srl"
-        else: srl=""
-
-        if ui.Step6checkpedwlr.isChecked()== True:
-            wlr="wlr"
-        else: wlr=""
-
-        if ui.Step6checkpedwrl.isChecked()== True:
-            wrl="wrl"
-        else: wrl=""
-
-        if ui.Step6checkpedelr.isChecked()== True:
-            elr="elr"
-        else: elr=""
-
-        if ui.Step6checkpederl.isChecked()== True:
-            erl="erl"
-        else: erl=""
-        
-        selected_dir=[nw,ne,ns,sw,se,sn,wn,we,ws,en,ew,es,nlr,nrl,slr,srl,elr,erl]
-        f=",".join(i for i in selected_dir if len(i) > 0) #a string that contains all the selected directions seperated by comma for API call
-
-     #Step 7 Select Output Format
-        if ui.Step7radioButtondisplay.isChecked()==True:
-            print_only = True
-        elif ui.Step7radioButtoncsv.isChecked()==True:
-            print_only = False
-        #csv file saving window should pop up here and get file name and location
     
-     #return variables needs for API call
-        return(udid,mode,d1,t1,d2,t2,threshold,a,f,print_only)
+    def step8clicked(self): #so that when "confirmed query" is pressed GUI window closes
+        self.mainwindow.close()
     
+    # def step1_1clicked(self):
+    #     image = QtGui.QImage(QtGui.QImageReader("./kalayout.png").read())
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
+#global function to pull values based on GUI input
+def pull_val_from_GUI (ui):
+    #Step 1 Select Location (UDID) - defines udid
+    if ui.Step1radioButton1.isChecked()== True:
+        udid = 'BCT_3D_5G_0101001'
+    elif ui.Step1radioButton2.isChecked()== True:
+        udid = 'BCT_3D_5G_0101002'
+    print (udid)
+
+    #Step 2 Select Data Mode - defines mode
+    if ui.Step2radioButtonMode1.isChecked()== True:
+        mode = 1
+    elif ui.Step2radioButtonMode2.isChecked()== True:
+        mode = 2
+    
+    #Step 3 Enter Date and/or Time Range - defines d1,t1,d2,t2
+    d1 = ui.Step3d1Enter.text() #format: YYYY-MM-DD
+    t1 = ui.Step3t1Enter.text() #format: THH:MM:SS
+    d2 = ui.Step3d2Enter.text()
+    t2 = ui.Step3t2Enter.text()
+
+    #Step 4 Input Threshold - defines threshold
+    if ui.Step4thresholdEnter.text()=="":
+        threshold = 300
+    else:
+        threshold = int(ui.Step4thresholdEnter.text())
+    
+    #Step 5 Select Aggregation Interval (Mode 2 Only) - defines a
+    if ui.Step5radioButton1.isChecked()== True:
+        a=1
+    if ui.Step5radioButton2.isChecked()== True:
+        a=2
+    if ui.Step5radioButton3.isChecked()== True:
+        a=3
+    if ui.Step5radioButton4.isChecked()== True:
+        a=4
+
+    #Step 6 Select Output Items (Mode 2 Only) - defines f
+    #vehicle directions
+    #North
+    if ui.Step6checknw.isChecked()== True:
+        nw="nw"
+    else: nw=""
+
+    if ui.Step6checkne.isChecked()== True:
+        ne="ne"
+    else: ne=""
+
+    if ui.Step6checkns.isChecked()== True:
+        ns="ns"
+    else: ns=""
+    #South
+    if ui.Step6checksw.isChecked()== True:
+        sw="sw"
+    else: sw=""
+
+    if ui.Step6checkse.isChecked()== True:
+        se="se"
+    else: se=""
+
+    if ui.Step6checksn.isChecked()== True:
+        sn="sn"
+    else: sn=""
+    #West
+    if ui.Step6checkwn.isChecked()== True:
+        wn="wn"
+    else: wn=""
+
+    if ui.Step6checkwe.isChecked()== True:
+        we="we"
+    else: we=""
+
+    if ui.Step6checkws.isChecked()== True:
+        ws="ws"
+    else: ws=""
+    #East
+    if ui.Step6checken.isChecked()== True:
+        en="en"
+    else: en=""
+
+    if ui.Step6checkew.isChecked()== True:
+        ew="ew"
+    else: ew=""
+
+    if ui.Step6checkes.isChecked()== True:
+        es="es"
+    else: es=""
+
+    #Pedestrian Directions
+    if ui.Step6checkpednlr.isChecked()== True:
+        nlr="nlr"
+    else: nlr=""
+
+    if ui.Step6checkpednrl.isChecked()== True:
+        nrl="nrl"
+    else: nrl=""
+    
+    if ui.Step6checkpedslr.isChecked()== True:
+        slr="slr"
+    else: slr=""
+
+    if ui.Step6checkpedsrl.isChecked()== True:
+        srl="srl"
+    else: srl=""
+
+    if ui.Step6checkpedwlr.isChecked()== True:
+        wlr="wlr"
+    else: wlr=""
+
+    if ui.Step6checkpedwrl.isChecked()== True:
+        wrl="wrl"
+    else: wrl=""
+
+    if ui.Step6checkpedelr.isChecked()== True:
+        elr="elr"
+    else: elr=""
+
+    if ui.Step6checkpederl.isChecked()== True:
+        erl="erl"
+    else: erl=""
+    
+    selected_dir=[nw,ne,ns,sw,se,sn,wn,we,ws,en,ew,es,nlr,nrl,slr,srl,wlr,wrl,elr,erl]
+    f=",".join(i for i in selected_dir if len(i) > 0) #a string that contains all the selected directions seperated by comma for API call
+
+    #Step 7 Select Output Format
+    if ui.Step7radioButtondisplay.isChecked()==True:
+        print_only = True
+    elif ui.Step7radioButtoncsv.isChecked()==True:
+        print_only = False
+    #csv file saving window should pop up here and get file name and location
+
+    #return variables needed for API call
+    return(udid,mode,d1,t1,d2,t2,threshold,a,f,print_only)
+
+
+
