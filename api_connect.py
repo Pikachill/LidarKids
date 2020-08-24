@@ -202,19 +202,22 @@ class API_Connect():
         return daily_average #an interger
 
     # Simplified Mode Item No.5
-    def sim_weekday_flow(self, all_approach):
-        avg_weekday_approach={}
+    def sim_weekday_flow(self,all_approach):
         no_of_weekdays=0
-        for approach in all_approach[i][approach]:
-            temp = 0
-            for i in all_approach:
-                date = datetime.date.fromisoformat(all_approach.keys[i])
-                if (date.weekday() < 5):
-                    no_of_weekdays += 1
-                    temp = temp + all_approach[i][approach]
-                
-                avg_weekday_approach[approach]=temp/no_of_weekdays
-        return avg_weekday_approach
+        temp={"north":0 ,"south":0 ,"east":0 ,"west":0}
+        for key in all_approach:
+            date = datetime.date.fromisoformat(key)
+            if (date.weekday() < 5):
+                no_of_weekdays += 1
+                temp["north"]+=all_approach[key]["north"]
+                temp["south"]+=all_approach[key]["south"]
+                temp["east"]+=all_approach[key]["east"]
+                temp["west"]+=all_approach[key]["west"]
+        temp["north"]/=no_of_weekdays
+        temp["south"]/=no_of_weekdays
+        temp["east"]/=no_of_weekdays
+        temp["west"]/=no_of_weekdays
+        return temp #{"north":0 ,"south":0 ,"east":0 ,"west":0}
 
     # Simplified Mode Item No.6
     def sim_count_hour_above_threshold(self, result, threshold, ped_xing_peak=False):
