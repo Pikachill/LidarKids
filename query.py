@@ -115,7 +115,7 @@ def mode1_query(udid, d1, d2, threshold, print_only):
 
 
 #####Mode 2 Query######
-def mode2_query(udid, mode, d1, t1, d2, t2, a, f, print_only):
+def mode2_query(udid,mode,d1,t1,d2,t2,a,f,print_only):
     print('...Fetching results from server...')
     print('...This will take a while...')  # Daily API Request
 

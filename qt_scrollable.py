@@ -340,7 +340,6 @@ def pull_val_from_GUI(ui):
         udid = 'BCT_3D_5G_0101001'
     elif ui.Step1radioButton2.isChecked():
         udid = 'BCT_3D_5G_0101002'
-    print(udid)
 
     # Step 2 Select Data Mode - defines mode
     if ui.Step2radioButtonMode1.isChecked():
