@@ -1,6 +1,3 @@
-# Check-out: Akhil_08-05; Poom_08-06; Colleen_08-16; Sathvik_08-16T2100; 
-# Colleen_08_17_21:30 added functions to split timestamps
-
 import json
 import requests
 from heapq import nlargest
@@ -15,7 +12,6 @@ class BearerAuth(requests.auth.AuthBase):
         r.headers["authorization"] = "Bearer " + self.token
         return r
 
-#edit
 class API_Connect():
     simplified = '1'
     token = "WJe_wI2r9-dtJsR83i77yQgKo3bsnqStOP6Xf604Y6JRTzd3D0jLsg0ZaGSwUeCaUBMFR1MWHgGwGjXN"
