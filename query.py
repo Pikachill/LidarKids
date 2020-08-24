@@ -7,7 +7,7 @@ from api_connect import *
 
 
 #####Mode 1 Query######
-def mode1_query(udid, d1, d2, threshold, print_only):
+def mode1_query(udid, d1, d2, threshold, file_path_name):
     print('...Fetching results from server...')
     print('...This will take a while...')
 
@@ -88,7 +88,7 @@ def mode1_query(udid, d1, d2, threshold, print_only):
     print("Average daily traffic flow:")
     print(daily_average)
 
-    print("Average weekday daily traffic flow: ")
+    # print("Average weekday daily traffic flow: ")
     print(json.dumps(weekday_flow, indent=2))
 
     print("No. of hour above threshold for each day: ")
@@ -114,7 +114,7 @@ def mode1_query(udid, d1, d2, threshold, print_only):
 
 
 #####Mode 2 Query######
-def mode2_query(udid,mode,d1,t1,d2,t2,a,f,print_only):
+def mode2_query(udid,mode,d1,t1,d2,t2,a,f,file_path_name):
     print('...Fetching results from server...')
     print('...This will take a while...')  # Daily API Request
 
