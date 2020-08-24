@@ -13,11 +13,11 @@ if __name__ == "__main__":
     MainWindow.show()
     app.exec_()
 
-    (udid, mode, d1, t1, d2, t2, threshold, a, f, print_only) = pull_val_from_GUI(ui)
-    print(udid, mode, d1, t1, d2, t2, threshold, a, f, print_only)  # tests if the values has been returned
+    (udid, mode, d1, t1, d2, t2, threshold, a, f, file_path_name) = pull_val_from_GUI(ui)
+    print(udid, mode, d1, t1, d2, t2, threshold, a, f, file_path_name)  # tests if the values has been returned
 
     # executes query functions based on the selected mode
     if mode == 1:
-        mode1_query(udid, d1, d2, threshold, print_only)
+        mode1_query(udid, d1, d2, threshold, file_path_name)
     elif mode == 2:
-        mode2_query(udid, mode, d1, t1, d2, t2, a, f, print_only)
+        mode2_query(udid, mode, d1, t1, d2, t2, a, f, file_path_name)
