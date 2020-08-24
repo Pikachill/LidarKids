@@ -45,9 +45,8 @@ class API_Connect():
         response = requests.get('https://api.bluecitytechnology.com/s/ad', params=parameters,
                                 auth=BearerAuth(self.token))
         dictionary_response = json.loads(response.text)  # extracts the response in "text" format
-
-        return dictionary_response[
-            'values']  # the responses contains other info, but 'values' contains the date and the flows
+        
+        return dictionary_response['values']  # the responses contains other info, but 'values' contains the date and the flows
 
     # constructs date type objects from the "YYYY-MM-DD" input strings
     def time_phrase(self):
@@ -196,31 +195,26 @@ class API_Connect():
         return (all_lane, most_used_lane, least_used_lane)
 
     # Simplified Mode Item No.4
-    def sim_avg_daily_traffic_flow(self, result, ped_xing_avg=False):
-        daily_average = 0
-        total = 0
-        no_of_days = 0
-        for date in result:
-            sum += 1
-            total += self.sim_daily_sum(result, ped_xing_avg)
+    def sim_avg_daily_traffic_flow(self, daily_sum):
+        no_of_days = len(daily_sum)
+        total = sum(daily_sum.values())
         daily_average = total / no_of_days
-        return daily_average
+        return daily_average #an interger
 
     # Simplified Mode Item No.5
-    def sim_weekday_flow(self, result):
-        for date in result:
-            temp_dict = {}
-            if (date.weekday() < 5):
-                for approach in self.approach_direction.keys():
-                    total = 0
-                    for field in self.approach_direction[approach]:
-                        # check for missing key(s)
-                        if field in result[date]:
-                            temp = result[date][field]
-                            total += temp
-
-                    temp_dict[approach] = total
-        return temp_dict
+    def sim_weekday_flow(self, all_approach):
+        avg_weekday_approach={}
+        no_of_weekdays=0
+        for approach in all_approach[i][approach]:
+            temp = 0
+            for i in all_approach:
+                date = datetime.date.fromisoformat(all_approach.keys[i])
+                if (date.weekday() < 5):
+                    no_of_weekdays += 1
+                    temp = temp + all_approach[i][approach]
+                
+                avg_weekday_approach[approach]=temp/no_of_weekdays
+        return avg_weekday_approach
 
     # Simplified Mode Item No.6
     def sim_count_hour_above_threshold(self, result, threshold, ped_xing_peak=False):
