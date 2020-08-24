@@ -104,7 +104,7 @@ class API_Connect():
     # Simplified Mode Item No.1 / 7 b-g, top 3 peak hour names & values
     def sim_peak_hours(self, result, ped_xing_peak=False):
         all_hours = {}
-        ret_val = {}
+        ret_val = []
         count = 0
 
         if ped_xing_peak:
@@ -114,25 +114,25 @@ class API_Connect():
 
         for hour in result:
             total = 0
-            for direction in isPed_xing_peak:  # this loop adds up all directions' flow for one hour
+            for direction in isPed_xing_peak:
                 # check for missing key(s)
                 if direction in result[hour]:
-                    temp = result[hour][direction]  # extracts flow for one particular direction for one hour
-                    total += temp  # add flow for one particular direction for that hour to the hourly total
+                    temp = result[hour][direction]
+                    total += temp
 
             if count < 24:
-                all_hours[hour] = total  # stores one hourly flow in the dictionary
-            elif count == 24:  # stop when 24 hourly flows have been stored
-                three_daily_peaks = nlargest(3, all_hours,
-                                             key=all_hours.get)  # three_daily_peaks is a list that contains the name of the 3 peak hours
-
-                for timestamp in three_daily_peaks:  # goes through each entry in the list three_daily_peaks
-                    ret_val[timestamp] = all_hours[
-                        timestamp]  # assigning values for the 3 peak hours using the all_hours dictionary
-
-                all_hours.clear()  # this happens when the loop has been executed for 24 times in a day and the 3 peaks have been stored
                 all_hours[hour] = total
-                count = 0  # so that we can move onto the next day with count initialized
+            elif count == 24:
+                three_daily_peaks = nlargest(3, all_hours, key=all_hours.get)
+
+                for timestamp in three_daily_peaks:
+                    temp_time = timestamp.split()  # Split and the space, use index = 1 for hours
+                    ret_val.append({temp_time[0]: temp_time[1]})
+                    ret_val.append({temp_time[0]: all_hours[timestamp]})
+
+                all_hours.clear()
+                all_hours[hour] = total
+                count = 0
 
             count += 1
 

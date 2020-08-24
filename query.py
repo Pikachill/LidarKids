@@ -123,6 +123,7 @@ def mode2_query(udid,mode,d1,t1,d2,t2,a,f,print_only):
 
     # Getting unlimited range for all types of aggregation
     list_time = mode_2_request.time_phrase()
+    print(list_time)
     unlimited_query = []
 
     for index in range(len(list_time) - 1):
