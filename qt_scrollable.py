@@ -1,12 +1,5 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'qttest_scrollable.ui'
-#
-# Created by: PyQt5 UI code generator 5.9.2
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PIL import Image
 
 
 class Ui_MainWindow():
@@ -267,8 +260,8 @@ class Ui_MainWindow():
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        # self.Step1toolButtonLayout1.clicked.connect(self.step1_1clicked)
-        # self.Step1toolButtonLayout2.clicked.connect(self.step1_2clicked)
+        self.Step1toolButtonLayout1.clicked.connect(self.step1_1clicked)
+        self.Step1toolButtonLayout2.clicked.connect(self.step1_2clicked)
         self.Step8pushButtonConfirmQuery.clicked.connect(self.step8clicked)
 
     def retranslateUi(self, MainWindow):
@@ -329,10 +322,14 @@ class Ui_MainWindow():
     def step8clicked(self):  # so that when "confirmed query" is pressed GUI window closes
         self.mainwindow.close()
 
-    # def step1_1clicked(self):
-    #     image = QtGui.QImage(QtGui.QImageReader("./kalayout.png").read())
-
-
+    def step1_1clicked(self):
+        image = Image.open('layout1.png')
+        image.show()
+    
+    def step1_2clicked(self):
+        image = Image.open('layout2.png')
+        image.show()
+        
 # global function to pull values based on GUI input
 def pull_val_from_GUI(ui):
     # Step 1 Select Location (UDID) - defines udid
@@ -481,11 +478,10 @@ def pull_val_from_GUI(ui):
                  len(i) > 0)  # a string that contains all the selected directions seperated by comma for API call
 
     # Step 7 Select Output Format
-    if ui.Step7radioButtondisplay.isChecked() == True:
-        print_only = True
-    elif ui.Step7radioButtoncsv.isChecked() == True:
-        print_only = False
-    # csv file saving window should pop up here and get file name and location
-
+    if ui.Step7radioButtoncsv.isChecked() == True:
+        filename = QtWidgets.QFileDialog.getSaveFileName(None, "Save Your .CSV File", "", 
+                                    "*.csv") #e.g. ('/Users/colleenqiu/Desktop/hello.csv', '*.csv')
+        file_path_name = filename[0] 
+        print(file_path_name)
     # return variables needed for API call
-    return (udid, mode, d1, t1, d2, t2, threshold, a, f, print_only)
+    return (udid, mode, d1, t1, d2, t2, threshold, a, f, file_path_name)
