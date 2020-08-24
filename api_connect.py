@@ -30,25 +30,27 @@ class API_Connect():
     side_walk_approach = ['n', 's', 'e', 'w']
 
     # initiates all the attributes that belong to the object "self"
-    def __init__(self, UDID, fdate, tdate, fields, aggregation):
+    def __init__(self, UDID, fdate, tdate, fields, aggregation, ftime='T00:00:00', ttime='T23:59:59'):
         self.UDID = UDID
         self.fdate = fdate
         self.tdate = tdate
         self.fields = fields
         self.aggregation = aggregation
+        self.ttime = ttime
+        self.ftime = ftime
 
     def api_request(self):
         parameters = {"UDID": self.UDID, "fdate": self.fdate, "tdate": self.tdate, "f": self.fields,
                       "a": self.aggregation, "simplified": self.simplified}
         response = requests.get('https://api.bluecitytechnology.com/s/ad', params=parameters,
                                 auth=BearerAuth(self.token))
-        dictionay_response = json.loads(response.text)  # extracts the response in "text" format
+        dictionary_response = json.loads(response.text)  # extracts the response in "text" format
 
-        return dictionay_response[
+        return dictionary_response[
             'values']  # the responses contains other info, but 'values' contains the date and the flows
 
     # constructs date type objects from the "YYYY-MM-DD" input strings
-    def time_pharse(self):
+    def time_phrase(self):
         start_date = datetime.datetime.fromisoformat(self.fdate)
         end_date = datetime.datetime.fromisoformat(self.tdate)
         difference = end_date - start_date
@@ -56,12 +58,14 @@ class API_Connect():
 
         time_skip = []
 
-        for increment in range(difference.days + 2):  # difference is an object with class datetime
+        for increment in range(difference.days):  # difference is an object with class datetime
             temp = start_date.date() + datetime.timedelta(days=count)
             date_string = temp.strftime('%Y-%m-%d')
-            ret_val = date_string + 'T00:00:00'  # comebines the date string and time string to make a timestamp string
+            ret_val = date_string + self.ftime  # combines the date string and time string to make a timestamp string
             time_skip.append(ret_val)  # adds the newly generated timestamp string to the list
             count += 1
+
+        time_skip.append(self.tdate + self.ttime)
         return time_skip  # generate a list of timestamps for 0:00 on each day in the range
 
     # outputs a date list from a timestamp list (both are strings)

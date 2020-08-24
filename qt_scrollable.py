@@ -363,12 +363,15 @@ def pull_val_from_GUI(ui):
     # Step 5 Select Aggregation Interval (Mode 2 Only) - defines a
     if ui.Step5radioButton1.isChecked():
         a = 1
-    if ui.Step5radioButton2.isChecked():
+    elif ui.Step5radioButton2.isChecked():
         a = 2
-    if ui.Step5radioButton3.isChecked():
+    elif ui.Step5radioButton3.isChecked():
         a = 3
-    if ui.Step5radioButton4.isChecked():
+    elif ui.Step5radioButton4.isChecked():
         a = 4
+    else:
+        a = 0
+
 
     # Step 6 Select Output Items (Mode 2 Only) - defines f
     # vehicle directions

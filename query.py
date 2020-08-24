@@ -12,13 +12,17 @@ def mode1_query(udid, d1, d2, threshold, print_only):
     print('...This will take a while...')
 
     # Daily API Request
-    daily_request = API_Connect(udid, d1, d2, 'ne,ns,nw,es,ew,en,sw,sn,se,wn,we,ws,nrl,nlr,erl,elr,srl,slr,wrl,wlr,',
+    start_date = d1 + 'T00:00:00'
+    end_date = d2 + 'T00:00:00'
+    print(start_date)
+
+    daily_request = API_Connect(udid, start_date, end_date, 'ne,ns,nw,es,ew,en,sw,sn,se,wn,we,ws,nrl,nlr,erl,elr,srl,slr,wrl,wlr,',
                                 '3')
     query = daily_request.api_request()  # dictionary containing API call for daily aggregation
     # print(json.dumps(query,indent=2))
 
     # hourly API request
-    list_peak_times = daily_request.time_pharse()
+    list_peak_times = daily_request.time_phrase()
     hourly_query_list = []
 
     for i in range(len(list_peak_times) - 1):
@@ -114,10 +118,11 @@ def mode1_query(udid, d1, d2, threshold, print_only):
 def mode2_query(udid, mode, d1, t1, d2, t2, a, f, print_only):
     print('...Fetching results from server...')
     print('...This will take a while...')  # Daily API Request
-    mode_2_request = API_Connect(udid, d1, d2, f, a)
+
+    mode_2_request = API_Connect(udid, d1, d2, f, a, t1, t2)
 
     # Getting unlimited range for all types of aggregation
-    list_time = mode_2_request.time_pharse()
+    list_time = mode_2_request.time_phrase()
     unlimited_query = []
 
     for index in range(len(list_time) - 1):
