@@ -19,4 +19,4 @@ if __name__ == "__main__":
     if mode == 1:
         mode1_query(udid,d1,d2,threshold,print_only)
     elif mode == 2:
-        mode2_query(udid,mode,d1,t1,d2,t2,threshold,a,f,print_only)
+        mode2_query(udid,mode,d1,t1,d2,t2,a,f,print_only)
