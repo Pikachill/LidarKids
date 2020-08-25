@@ -145,34 +145,35 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
     print(json.dumps(least_used_crosswalk, indent=2))
 
     # CSV Export #
-    analyzed_data = {}
-    analyzed_data['Daily Sum'] = daily_total
-    analyzed_data['Ped Daily Sum'] = daily_total_ped
-    analyzed_data['1st Peak Hour'] = report_peak_hours_one
-    analyzed_data['1st Peak Hour Value'] = report_peak_hours_val_one
-    analyzed_data['2nd Peak Hour'] = report_peak_hours_two
-    analyzed_data['2nd Peak Hour Value'] = report_peak_hours_val_two
-    analyzed_data['3rd Peak Hour'] = report_peak_hours_three
-    analyzed_data['3rd Peak Hour Value'] = report_peak_hours_val_three
-    analyzed_data['1st Pedestrian Peak Hour'] = report_peak_hours_ped_one
-    analyzed_data['1st Pedestrian Peak Hour Value'] = report_peak_hours_ped_val_one
-    analyzed_data['2nd Pedestrian Peak Hour'] = report_peak_hours_ped_two
-    analyzed_data['2nd Pedestrian Peak Hour Value'] = report_peak_hours_ped_val_two
-    analyzed_data['3rd Pedestrian Peak Hour'] = report_peak_hours_ped_three
-    analyzed_data['3rd Pedestrian Peak Hour Value'] = report_peak_hours_ped_val_three
-    analyzed_data['Hours Over Threshold'] = report_threshold_hours
-    analyzed_data['Hours Over Threshold Pedestrian'] = report_threshold_hours_ped
-    analyzed_data['Most In Flow Approach'] = most_in
-    analyzed_data['Most In Flow Approach Value'] = most_in_val
-    analyzed_data['Most Out Flow Approach'] = most_out
-    analyzed_data['Most Out Flow Approach Value'] = most_out_val
-    analyzed_data['Most Used Lane'] = most_used_lane
-    analyzed_data['Least Used Lane'] = least_used_lane
-    analyzed_data['Most Used Crosswalk'] = {}
-    analyzed_data['Least Used Crosswalk'] = {}
-    # analyzed_data['Approach'] = ["north","south","east","west"]
-    # analyzed_data['Weekday Flow'] = [weekday_flow[0],weekday_flow[1],weekday_flow[2],weekday_flow[3]]
-    # daily_request.convertToCSV(analyzed_data, file_path_name)
+    if file_path_name != "None":
+        analyzed_data = {}
+        analyzed_data['Daily Sum'] = daily_total
+        analyzed_data['Ped Daily Sum'] = daily_total_ped
+        analyzed_data['1st Peak Hour'] = report_peak_hours_one
+        analyzed_data['1st Peak Hour Value'] = report_peak_hours_val_one
+        analyzed_data['2nd Peak Hour'] = report_peak_hours_two
+        analyzed_data['2nd Peak Hour Value'] = report_peak_hours_val_two
+        analyzed_data['3rd Peak Hour'] = report_peak_hours_three
+        analyzed_data['3rd Peak Hour Value'] = report_peak_hours_val_three
+        analyzed_data['1st Pedestrian Peak Hour'] = report_peak_hours_ped_one
+        analyzed_data['1st Pedestrian Peak Hour Value'] = report_peak_hours_ped_val_one
+        analyzed_data['2nd Pedestrian Peak Hour'] = report_peak_hours_ped_two
+        analyzed_data['2nd Pedestrian Peak Hour Value'] = report_peak_hours_ped_val_two
+        analyzed_data['3rd Pedestrian Peak Hour'] = report_peak_hours_ped_three
+        analyzed_data['3rd Pedestrian Peak Hour Value'] = report_peak_hours_ped_val_three
+        analyzed_data['Hours Over Threshold'] = report_threshold_hours
+        analyzed_data['Hours Over Threshold Pedestrian'] = report_threshold_hours_ped
+        analyzed_data['Most In Flow Approach'] = most_in
+        analyzed_data['Most In Flow Approach Value'] = most_in_val
+        analyzed_data['Most Out Flow Approach'] = most_out
+        analyzed_data['Most Out Flow Approach Value'] = most_out_val
+        analyzed_data['Most Used Lane'] = most_used_lane
+        analyzed_data['Least Used Lane'] = least_used_lane
+        analyzed_data['Most Used Crosswalk'] = {}
+        analyzed_data['Least Used Crosswalk'] = {}
+        # analyzed_data['Approach'] = ["north","south","east","west"]
+        # analyzed_data['Weekday Flow'] = [weekday_flow[0],weekday_flow[1],weekday_flow[2],weekday_flow[3]]
+        # daily_request.convertToCSV(analyzed_data, file_path_name)
 
 
 #####Mode 2 Query######
