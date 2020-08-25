@@ -3,6 +3,7 @@ import requests
 from heapq import nlargest
 from heapq import nsmallest
 import datetime
+import pandas as pd
 
 
 class BearerAuth(requests.auth.AuthBase):
@@ -25,8 +26,8 @@ class API_Connect():
                             's2': ['sw', 'se', 'sn'], 'e1': ['en', 'ew'], 'e2': ['es'], 'e3': ['ne', 'we', 'se'],
                             'w1': ['we', 'ws'], 'w2': ['wn'], 'w3': ['nw', 'ew', 'sw']}
     ped_direction = ['nrl', 'nlr', 'erl', 'elr', 'srl', 'slr', 'wrl', 'wlr']
-    approach_direction = {'north': ['ns', 'nw', 'ne'], 'south': ['sn', 'se', 'sw'], 'east': ['ew', 'en', 'es'],
-                          'west': ['we', 'ws', 'wn']}
+    approach_out = {'north':['ns','nw','ne'],'south':['sn','se','sw'],'east':['ew','en','es'],'west':['we','ws','wn']}
+    approach_in = {'north':['en','sn','wn'],'south':['ns','es','ws'],'east':['ne','se','we'],'west':['nw','ew','sw']}
     side_walk_approach = ['n', 's', 'e', 'w']
 
     # initiates all the attributes that belong to the object "self"
@@ -138,32 +139,52 @@ class API_Connect():
         return ret_val
 
     # Simplified Mode Item No.2 - Approach Flows
-    def sim_peak_approach(self, result):
+    def sim_peak_approach(self,result):
         all_approach = {}
-        most_approach = {}
-        least_approach = {}
+        most_in = {}
+        most_in_val = {}
+        most_out = {}
+        most_out_val = {}
         count = 0
 
+        # Approach out
         for date in result:
             temp_dict = {}
 
-            for approach in self.approach_direction.keys():
+            for approach in self.approach_out.keys():
                 total = 0
-                for field in self.approach_direction[approach]:
+                for field in self.approach_out[approach]:
                     # check for missing key(s)
                     if field in result[date]:
                         temp = result[date][field]
                         total += temp
-
+                
                 temp_dict[approach] = total
             most_used = nlargest(1, temp_dict, key=temp_dict.get)
-            least_used = nsmallest(1, temp_dict, key=temp_dict.get)
 
-            all_approach[date] = temp_dict
-            most_approach[date] = most_used
-            least_approach[date] = least_used
+            # all_approach[date] = temp_dict
+            most_out[date] = most_used[0]
+            most_out_val[date] = temp_dict[most_used[0]]
+        
+        # Approach In
+        for date in result:
+            temp_dict = {}
 
-        return (all_approach, most_approach, least_approach)
+            for approach in self.approach_in.keys():
+                total = 0
+                for field in self.approach_in[approach]:
+                    # check for missing key(s)
+                    if field in result[date]:
+                        temp = result[date][field]
+                        total += temp
+                
+                temp_dict[approach] = total
+            most_used = nlargest(1, temp_dict, key=temp_dict.get)
+
+            most_in[date] = most_used[0]
+            most_in_val[date] = temp_dict[most_used[0]]
+
+        return (most_in,most_in_val,most_out,most_out_val)
 
     # Simplified Mode Item No.3 - Lane Flows
     def sim_lane_sum(self, result):
@@ -188,11 +209,11 @@ class API_Connect():
             most_used = nlargest(1, temp_dict, key=temp_dict.get)
             least_used = nsmallest(1, temp_dict, key=temp_dict.get)
 
-            all_lane[date] = temp_dict
-            most_used_lane[date] = most_used
-            least_used_lane[date] = least_used
+            # all_lane[date] = temp_dict
+            most_used_lane[date] = most_used[0]
+            least_used_lane[date] = least_used[0]
 
-        return (all_lane, most_used_lane, least_used_lane)
+        return (most_used_lane, least_used_lane)
 
     # Simplified Mode Item No.4
     def sim_avg_daily_traffic_flow(self, daily_sum):
