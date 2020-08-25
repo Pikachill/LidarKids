@@ -230,10 +230,10 @@ class API_Connect():
             date = datetime.date.fromisoformat(key)
             if (date.weekday() < 5):
                 no_of_weekdays += 1
-                temp["north"]+=all_approach[key]["north"]
-                temp["south"]+=all_approach[key]["south"]
-                temp["east"]+=all_approach[key]["east"]
-                temp["west"]+=all_approach[key]["west"]
+                temp["north"]+=(all_approach[key]["ne"]+all_approach[key]["ns"]+all_approach[key]["nw"])
+                temp["south"]+=(all_approach[key]["sw"]+all_approach[key]["sn"]+all_approach[key]["se"])
+                temp["east"]+=(all_approach[key]["es"]+all_approach[key]["ew"]+all_approach[key]["en"])
+                temp["west"]+=(all_approach[key]["wn"]+all_approach[key]["we"]+all_approach[key]["ws"])
         temp["north"]/=no_of_weekdays
         temp["south"]/=no_of_weekdays
         temp["east"]/=no_of_weekdays
