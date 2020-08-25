@@ -284,7 +284,7 @@ class Ui_MainWindow():
         self.Step6checkse.setText(_translate("MainWindow", "South to East"))
         self.Step2Label.setText(_translate("MainWindow", "2. Select Data Mode"))
         self.Step5pedLabel.setText(_translate("MainWindow", "Pedestrian Crosswalks:"))
-        self.Step3tformatLabel.setText(_translate("MainWindow", "(HH:MM:SS, e.g. T23:30:00)"))
+        self.Step3tformatLabel.setText(_translate("MainWindow", "(THH:MM:SS, e.g. T23:30:00)"))
         self.Step7Label.setText(_translate("MainWindow", "7. Select Output Format"))
         self.Step6checkpedwlr.setText(_translate("MainWindow", "West - L to R"))
         self.Step1radioButton2.setText(_translate("MainWindow", "Bernard Ave and Water St. (#2)"))
