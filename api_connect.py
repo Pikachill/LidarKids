@@ -31,7 +31,7 @@ class API_Connect():
     side_walk_approach = ['n', 's', 'e', 'w']
 
     # initiates all the attributes that belong to the object "self"
-    def __init__(self, UDID, fdate, tdate, fields, aggregation, ftime='T00:00:00', ttime='T23:59:59'):
+    def __init__(self, UDID, fdate, tdate, fields, aggregation, ftime='T00:00:00', ttime='T00:00:00'):
         self.UDID = UDID
         self.fdate = fdate
         self.tdate = tdate
@@ -50,22 +50,29 @@ class API_Connect():
         return dictionary_response['values']  # the responses contains other info, but 'values' contains the date and the flows
 
     # constructs date type objects from the "YYYY-MM-DD" input strings
-    def time_phrase(self):
+    def time_phrase(self, mode):
         start_date = datetime.datetime.fromisoformat(self.fdate)
         end_date = datetime.datetime.fromisoformat(self.tdate)
         difference = end_date - start_date
         count = 0
 
+        if mode == 1:
+            additional_days = 2
+        elif mode == 2:
+            additional_days = 0
+            
         time_skip = []
 
-        for increment in range(difference.days):  # difference is an object with class datetime
+        for increment in range(difference.days + additional_days):  # difference is an object with class datetime
             temp = start_date.date() + datetime.timedelta(days=count)
             date_string = temp.strftime('%Y-%m-%d')
             ret_val = date_string + self.ftime  # combines the date string and time string to make a timestamp string
             time_skip.append(ret_val)  # adds the newly generated timestamp string to the list
             count += 1
 
-        time_skip.append(self.tdate + self.ttime)
+        if mode == 2:
+            time_skip.append(end_date.date() + self.ttime)
+
         return time_skip  # generate a list of timestamps for 0:00 on each day in the range
 
     # outputs a date list from a timestamp list (both are strings)

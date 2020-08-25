@@ -1,10 +1,10 @@
 # time format example:2020-07-02T00:00:00
 #all directions: 'ne,ns,nw,es,ew,en,sw,sn,se,wn,we,ws,nrl,nlr,erl,elr,srl,slr,wrl,wlr,'
+
 import json
 import requests
 from tkinter import filedialog
 from api_connect import *
-
 
 #####Mode 1 Query######
 def mode1_query(udid, d1, d2, threshold, file_path_name):
@@ -21,7 +21,7 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
     # print(json.dumps(query,indent=2))
 
     # hourly API request
-    list_peak_times = daily_request.time_phrase()
+    list_peak_times = daily_request.time_phrase(1)
     hourly_query_list = []
 
     for i in range(len(list_peak_times) - 1):
@@ -183,7 +183,7 @@ def mode2_query(udid,mode,d1,t1,d2,t2,a,f,file_path_name):
     mode_2_request = API_Connect(udid, d1, d2, f, a, t1, t2)
 
     # Getting unlimited range for all types of aggregation
-    list_time = mode_2_request.time_phrase()
+    list_time = mode_2_request.time_phrase(2)
     print(list_time)
     unlimited_query = []
 
