@@ -59,7 +59,7 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
         report_peak_hours_val_two.update(top_peak_hours[3])
         report_peak_hours_three.update(top_peak_hours[4])
         report_peak_hours_val_three.update(top_peak_hours[5])        
-        report_threshold_hours[date] = daily_request.sim_count_hour_above_threshold(index,threshold.get())
+        report_threshold_hours[date] = daily_request.sim_count_hour_above_threshold(index,threshold)
         top_ped_peak_hours = daily_request.sim_peak_hours(index,True)
         report_peak_hours_ped_one.update(top_ped_peak_hours[0])
         report_peak_hours_ped_val_one.update(top_ped_peak_hours[1])
@@ -67,7 +67,7 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
         report_peak_hours_ped_val_two.update(top_ped_peak_hours[3])
         report_peak_hours_ped_three.update(top_ped_peak_hours[4])
         report_peak_hours_ped_val_three.update(top_ped_peak_hours[5])
-        report_threshold_hours_ped[date] = daily_request.sim_count_hour_above_threshold(index,threshold.get(), True)
+        report_threshold_hours_ped[date] = daily_request.sim_count_hour_above_threshold(index,threshold, True)
 
     # 2 Daily Approach Flow
     (most_in,most_in_val,most_out,most_out_val) = daily_request.sim_peak_approach(query)
