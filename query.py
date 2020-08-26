@@ -1,10 +1,11 @@
 # time format example:2020-07-02T00:00:00
-#all directions: 'ne,ns,nw,es,ew,en,sw,sn,se,wn,we,ws,nrl,nlr,erl,elr,srl,slr,wrl,wlr'
+# all directions: 'ne,ns,nw,es,ew,en,sw,sn,se,wn,we,ws,nrl,nlr,erl,elr,srl,slr,wrl,wlr'
 
 import json
 import requests
 from tkinter import filedialog
 from api_connect import *
+
 
 #####Mode 1 Query######
 def mode1_query(udid, d1, d2, threshold, file_path_name):
@@ -15,7 +16,8 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
     start_date = d1 + 'T00:00:00'
     end_date = d2 + 'T00:00:00'
 
-    daily_request = API_Connect(udid, start_date, end_date, 'ne,ns,nw,es,ew,en,sw,sn,se,wn,we,ws,nrl,nlr,erl,elr,srl,slr,wrl,wlr',
+    daily_request = API_Connect(udid, start_date, end_date,
+                                'ne,ns,nw,es,ew,en,sw,sn,se,wn,we,ws,nrl,nlr,erl,elr,srl,slr,wrl,wlr',
                                 '3')
     query = daily_request.api_request()  # dictionary containing API call for daily aggregation
     # print(json.dumps(query,indent=2))
@@ -50,7 +52,7 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
     report_peak_hours_ped_val_three = {}
     report_threshold_hours = {}
     report_threshold_hours_ped = {}
-    for index in hourly_query_list: # index contains one days hourly aggregated data
+    for index in hourly_query_list:  # index contains one days hourly aggregated data
         date = daily_request.extract_date(index)
         top_peak_hours = daily_request.sim_peak_hours(index)
         report_peak_hours_one.update(top_peak_hours[0])
@@ -58,19 +60,19 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
         report_peak_hours_two.update(top_peak_hours[2])
         report_peak_hours_val_two.update(top_peak_hours[3])
         report_peak_hours_three.update(top_peak_hours[4])
-        report_peak_hours_val_three.update(top_peak_hours[5])        
-        report_threshold_hours[date] = daily_request.sim_count_hour_above_threshold(index,threshold)
-        top_ped_peak_hours = daily_request.sim_peak_hours(index,True)
+        report_peak_hours_val_three.update(top_peak_hours[5])
+        report_threshold_hours[date] = daily_request.sim_count_hour_above_threshold(index, threshold)
+        top_ped_peak_hours = daily_request.sim_peak_hours(index, True)
         report_peak_hours_ped_one.update(top_ped_peak_hours[0])
         report_peak_hours_ped_val_one.update(top_ped_peak_hours[1])
         report_peak_hours_ped_two.update(top_ped_peak_hours[2])
         report_peak_hours_ped_val_two.update(top_ped_peak_hours[3])
         report_peak_hours_ped_three.update(top_ped_peak_hours[4])
         report_peak_hours_ped_val_three.update(top_ped_peak_hours[5])
-        report_threshold_hours_ped[date] = daily_request.sim_count_hour_above_threshold(index,threshold, True)
+        report_threshold_hours_ped[date] = daily_request.sim_count_hour_above_threshold(index, threshold, True)
 
     # 2 Daily Approach Flow
-    (most_in,most_in_val,most_out,most_out_val,all_approach) = daily_request.sim_peak_approach(query)
+    (most_in, most_in_val, most_out, most_out_val, all_approach) = daily_request.sim_peak_approach(query)
 
     # 3 Daily Lane Flow
     (most_used_lane, least_used_lane) = daily_request.sim_lane_sum(query)
@@ -177,9 +179,12 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
 
 
 #####Mode 2 Query######
-def mode2_query(udid,mode,d1,t1,d2,t2,a,f,file_path_name):
+def mode2_query(udid, mode, d1, t1, d2, t2, a, f, file_path_name):
     print('...Fetching results from server...')
     print('...This will take a while...')  # Daily API Request
+
+    start_date = d1 + t1
+    end_date = d2 + t2
 
     mode_2_request = API_Connect(udid, d1, d2, f, a, t1, t2)
 
@@ -194,12 +199,12 @@ def mode2_query(udid,mode,d1,t1,d2,t2,a,f,file_path_name):
             queries = API_Connect(udid, list_time[index], list_time[count], f, a).api_request()
             unlimited_query.append(queries)
 
-    else:
-        daily_monthly = mode_2_request.api_request()
+    elif a == 3 or a == 4:
+        daily_monthly = API_Connect(udid, start_date, end_date, f, a).api_request()
 
     # Printing Mode 2 Results #
     if a == 1 or a == 2:
         print(json.dumps(unlimited_query, indent=2))
-    else:
+    elif a == 3 or a == 4:
         print(json.dumps(daily_monthly, indent=2))
     # csv export #
