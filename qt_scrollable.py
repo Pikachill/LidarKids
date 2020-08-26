@@ -478,10 +478,12 @@ def pull_val_from_GUI(ui):
                  len(i) > 0)  # a string that contains all the selected directions seperated by comma for API call
 
     # Step 7 Select Output Format
-    if ui.Step7radioButtoncsv.isChecked() == True:
+    if ui.Step7radioButtondisplay.isChecked() == True:
+        file_path_name = "None"
+    elif ui.Step7radioButtoncsv.isChecked() == True:
         filename = QtWidgets.QFileDialog.getSaveFileName(None, "Save Your .CSV File", "", 
                                     "*.csv") #e.g. ('/Users/colleenqiu/Desktop/hello.csv', '*.csv')
         file_path_name = filename[0] 
-        print(file_path_name)
+
     # return variables needed for API call
-    return (udid, mode, d1, t1, d2, t2, threshold, a, f, file_path_name)
+    return udid, mode, d1, t1, d2, t2, threshold, a, f, file_path_name

@@ -169,7 +169,7 @@ class API_Connect():
                 temp_dict[approach] = total
             most_used = nlargest(1, temp_dict, key=temp_dict.get)
 
-            # all_approach[date] = temp_dict
+            all_approach[date] = temp_dict
             most_out[date] = most_used[0]
             most_out_val[date] = temp_dict[most_used[0]]
         
@@ -191,7 +191,7 @@ class API_Connect():
             most_in[date] = most_used[0]
             most_in_val[date] = temp_dict[most_used[0]]
 
-        return (most_in,most_in_val,most_out,most_out_val)
+        return (most_in,most_in_val,most_out,most_out_val,all_approach)
 
     # Simplified Mode Item No.3 - Lane Flows
     def sim_lane_sum(self, result):

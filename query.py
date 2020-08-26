@@ -1,5 +1,5 @@
 # time format example:2020-07-02T00:00:00
-#all directions: 'ne,ns,nw,es,ew,en,sw,sn,se,wn,we,ws,nrl,nlr,erl,elr,srl,slr,wrl,wlr,'
+#all directions: 'ne,ns,nw,es,ew,en,sw,sn,se,wn,we,ws,nrl,nlr,erl,elr,srl,slr,wrl,wlr'
 
 import json
 import requests
@@ -15,7 +15,7 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
     start_date = d1 + 'T00:00:00'
     end_date = d2 + 'T00:00:00'
 
-    daily_request = API_Connect(udid, start_date, end_date, 'ne,ns,nw,es,ew',
+    daily_request = API_Connect(udid, start_date, end_date, 'ne,ns,nw,es,ew,en,sw,sn,se,wn,we,ws,nrl,nlr,erl,elr,srl,slr,wrl,wlr',
                                 '3')
     query = daily_request.api_request()  # dictionary containing API call for daily aggregation
     # print(json.dumps(query,indent=2))
@@ -27,7 +27,7 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
     for i in range(len(list_peak_times) - 1):
         count = i + 1
         call = API_Connect(udid, list_peak_times[i], list_peak_times[count],
-                           'ne,ns,nw,es,ew', '2').api_request()
+                           'ne,ns,nw,es,ew,en,sw,sn,se,wn,we,ws,nrl,nlr,erl,elr,srl,slr,wrl,wlr', '2').api_request()
         hourly_query_list.append(call)  # list containing hourly aggregation for all the days
 
     # Assigning values to analytics 1-11 #
@@ -59,7 +59,7 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
         report_peak_hours_val_two.update(top_peak_hours[3])
         report_peak_hours_three.update(top_peak_hours[4])
         report_peak_hours_val_three.update(top_peak_hours[5])        
-        report_threshold_hours[date] = daily_request.sim_count_hour_above_threshold(index,threshold.get())
+        report_threshold_hours[date] = daily_request.sim_count_hour_above_threshold(index,threshold)
         top_ped_peak_hours = daily_request.sim_peak_hours(index,True)
         report_peak_hours_ped_one.update(top_ped_peak_hours[0])
         report_peak_hours_ped_val_one.update(top_ped_peak_hours[1])
@@ -67,10 +67,10 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
         report_peak_hours_ped_val_two.update(top_ped_peak_hours[3])
         report_peak_hours_ped_three.update(top_ped_peak_hours[4])
         report_peak_hours_ped_val_three.update(top_ped_peak_hours[5])
-        report_threshold_hours_ped[date] = daily_request.sim_count_hour_above_threshold(index,threshold.get(), True)
+        report_threshold_hours_ped[date] = daily_request.sim_count_hour_above_threshold(index,threshold, True)
 
     # 2 Daily Approach Flow
-    (most_in,most_in_val,most_out,most_out_val) = daily_request.sim_peak_approach(query)
+    (most_in,most_in_val,most_out,most_out_val,all_approach) = daily_request.sim_peak_approach(query)
 
     # 3 Daily Lane Flow
     (most_used_lane, least_used_lane) = daily_request.sim_lane_sum(query)
@@ -79,7 +79,7 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
     daily_average = daily_request.sim_avg_daily_traffic_flow(daily_total)
 
     # 5 Weekday Average Approach Flow
-    weekday_flow = daily_request.sim_weekday_flow(query)
+    weekday_flow = daily_request.sim_weekday_flow(all_approach)
 
     # 8-11 The Most and Least Used Sidewalks
     (daily_crosswalk_flow, most_used_crosswalk, least_used_crosswalk) = daily_request.sim_ped_xing_approaches(query)
@@ -145,34 +145,35 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
     print(json.dumps(least_used_crosswalk, indent=2))
 
     # CSV Export #
-    analyzed_data = {}
-    analyzed_data['Daily Sum'] = daily_total
-    analyzed_data['Ped Daily Sum'] = daily_total_ped
-    analyzed_data['1st Peak Hour'] = report_peak_hours_one
-    analyzed_data['1st Peak Hour Value'] = report_peak_hours_val_one
-    analyzed_data['2nd Peak Hour'] = report_peak_hours_two
-    analyzed_data['2nd Peak Hour Value'] = report_peak_hours_val_two
-    analyzed_data['3rd Peak Hour'] = report_peak_hours_three
-    analyzed_data['3rd Peak Hour Value'] = report_peak_hours_val_three
-    analyzed_data['1st Pedestrian Peak Hour'] = report_peak_hours_ped_one
-    analyzed_data['1st Pedestrian Peak Hour Value'] = report_peak_hours_ped_val_one
-    analyzed_data['2nd Pedestrian Peak Hour'] = report_peak_hours_ped_two
-    analyzed_data['2nd Pedestrian Peak Hour Value'] = report_peak_hours_ped_val_two
-    analyzed_data['3rd Pedestrian Peak Hour'] = report_peak_hours_ped_three
-    analyzed_data['3rd Pedestrian Peak Hour Value'] = report_peak_hours_ped_val_three
-    analyzed_data['Hours Over Threshold'] = report_threshold_hours
-    analyzed_data['Hours Over Threshold Pedestrian'] = report_threshold_hours_ped
-    analyzed_data['Most In Flow Approach'] = most_in
-    analyzed_data['Most In Flow Approach Value'] = most_in_val
-    analyzed_data['Most Out Flow Approach'] = most_out
-    analyzed_data['Most Out Flow Approach Value'] = most_out_val
-    analyzed_data['Most Used Lane'] = most_used_lane
-    analyzed_data['Least Used Lane'] = least_used_lane
-    analyzed_data['Most Used Crosswalk'] = {}
-    analyzed_data['Least Used Crosswalk'] = {}
-    # analyzed_data['Approach'] = ["north","south","east","west"]
-    # analyzed_data['Weekday Flow'] = [weekday_flow[0],weekday_flow[1],weekday_flow[2],weekday_flow[3]]
-    # daily_request.convertToCSV(analyzed_data, file_path_name)
+    if file_path_name != "None":
+        analyzed_data = {}
+        analyzed_data['Daily Sum'] = daily_total
+        analyzed_data['Ped Daily Sum'] = daily_total_ped
+        analyzed_data['1st Peak Hour'] = report_peak_hours_one
+        analyzed_data['1st Peak Hour Value'] = report_peak_hours_val_one
+        analyzed_data['2nd Peak Hour'] = report_peak_hours_two
+        analyzed_data['2nd Peak Hour Value'] = report_peak_hours_val_two
+        analyzed_data['3rd Peak Hour'] = report_peak_hours_three
+        analyzed_data['3rd Peak Hour Value'] = report_peak_hours_val_three
+        analyzed_data['1st Pedestrian Peak Hour'] = report_peak_hours_ped_one
+        analyzed_data['1st Pedestrian Peak Hour Value'] = report_peak_hours_ped_val_one
+        analyzed_data['2nd Pedestrian Peak Hour'] = report_peak_hours_ped_two
+        analyzed_data['2nd Pedestrian Peak Hour Value'] = report_peak_hours_ped_val_two
+        analyzed_data['3rd Pedestrian Peak Hour'] = report_peak_hours_ped_three
+        analyzed_data['3rd Pedestrian Peak Hour Value'] = report_peak_hours_ped_val_three
+        analyzed_data['Hours Over Threshold'] = report_threshold_hours
+        analyzed_data['Hours Over Threshold Pedestrian'] = report_threshold_hours_ped
+        analyzed_data['Most In Flow Approach'] = most_in
+        analyzed_data['Most In Flow Approach Value'] = most_in_val
+        analyzed_data['Most Out Flow Approach'] = most_out
+        analyzed_data['Most Out Flow Approach Value'] = most_out_val
+        analyzed_data['Most Used Lane'] = most_used_lane
+        analyzed_data['Least Used Lane'] = least_used_lane
+        analyzed_data['Most Used Crosswalk'] = {}
+        analyzed_data['Least Used Crosswalk'] = {}
+        # analyzed_data['Approach'] = ["north","south","east","west"]
+        # analyzed_data['Weekday Flow'] = [weekday_flow[0],weekday_flow[1],weekday_flow[2],weekday_flow[3]]
+        # daily_request.convertToCSV(analyzed_data, file_path_name)
 
 
 #####Mode 2 Query######
