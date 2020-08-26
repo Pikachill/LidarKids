@@ -202,9 +202,13 @@ def mode2_query(udid, mode, d1, t1, d2, t2, a, f, file_path_name):
     elif a == 3 or a == 4:
         daily_monthly = API_Connect(udid, start_date, end_date, f, a).api_request()
 
-    # Printing Mode 2 Results #
+    # Printing & CSV Export Mode 2 Results #
     if a == 1 or a == 2:
         print(json.dumps(unlimited_query, indent=2))
+        if file_path_name != "None":
+            mode_2_request.convertToCSV(unlimited_query, file_path_name, True)
     elif a == 3 or a == 4:
         print(json.dumps(daily_monthly, indent=2))
-    # csv export #
+        if file_path_name != "None":
+            mode_2_request.convertToCSV(daily_monthly, file_path_name, True)
+    
