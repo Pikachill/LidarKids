@@ -169,11 +169,11 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
         analyzed_data['Most Out Flow Approach Value'] = most_out_val
         analyzed_data['Most Used Lane'] = most_used_lane
         analyzed_data['Least Used Lane'] = least_used_lane
-        analyzed_data['Most Used Crosswalk'] = {}
-        analyzed_data['Least Used Crosswalk'] = {}
+        analyzed_data['Most Used Crosswalk'] = most_used_crosswalk
+        analyzed_data['Least Used Crosswalk'] = least_used_crosswalk
         # analyzed_data['Approach'] = ["north","south","east","west"]
         # analyzed_data['Weekday Flow'] = [weekday_flow[0],weekday_flow[1],weekday_flow[2],weekday_flow[3]]
-        # daily_request.convertToCSV(analyzed_data, file_path_name)
+        daily_request.convertToCSV(analyzed_data, file_path_name)
 
 
 #####Mode 2 Query######
