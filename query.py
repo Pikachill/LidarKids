@@ -79,7 +79,7 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
     daily_average = daily_request.sim_avg_daily_traffic_flow(daily_total)
 
     # 5 Weekday Average Approach Flow
-    weekday_flow = daily_request.sim_weekday_flow(query)
+    weekday_flow = daily_request.sim_weekday_flow(all_approach)
 
     # 8-11 The Most and Least Used Sidewalks
     (daily_crosswalk_flow, most_used_crosswalk, least_used_crosswalk) = daily_request.sim_ped_xing_approaches(query)
