@@ -70,7 +70,7 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
         report_threshold_hours_ped[date] = daily_request.sim_count_hour_above_threshold(index,threshold, True)
 
     # 2 Daily Approach Flow
-    (most_in,most_in_val,most_out,most_out_val) = daily_request.sim_peak_approach(query)
+    (most_in,most_in_val,most_out,most_out_val,all_approach) = daily_request.sim_peak_approach(query)
 
     # 3 Daily Lane Flow
     (most_used_lane, least_used_lane) = daily_request.sim_lane_sum(query)
