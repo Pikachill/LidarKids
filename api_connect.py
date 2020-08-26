@@ -302,8 +302,8 @@ class API_Connect():
             least_used = nsmallest(1, temp_dict, key=temp_dict.get)
 
             all_approach_sum[date] = temp_dict
-            most_used_approach[date] = most_used
-            least_used_approach[date] = least_used
+            most_used_approach[date] = most_used[0]
+            least_used_approach[date] = least_used[0]
 
         return (all_approach_sum, most_used_approach, least_used_approach)
 
