@@ -1,5 +1,5 @@
 # time format example:2020-07-02T00:00:00
-#all directions: 'ne,ns,nw,es,ew,en,sw,sn,se,wn,we,ws,nrl,nlr,erl,elr,srl,slr,wrl,wlr,'
+#all directions: 'ne,ns,nw,es,ew,en,sw,sn,se,wn,we,ws,nrl,nlr,erl,elr,srl,slr,wrl,wlr'
 
 import json
 import requests
@@ -15,7 +15,7 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
     start_date = d1 + 'T00:00:00'
     end_date = d2 + 'T00:00:00'
 
-    daily_request = API_Connect(udid, start_date, end_date, 'ne,ns,nw,es,ew',
+    daily_request = API_Connect(udid, start_date, end_date, 'ne,ns,nw,es,ew,en,sw,sn,se,wn,we,ws,nrl,nlr,erl,elr,srl,slr,wrl,wlr',
                                 '3')
     query = daily_request.api_request()  # dictionary containing API call for daily aggregation
     # print(json.dumps(query,indent=2))
@@ -27,7 +27,7 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
     for i in range(len(list_peak_times) - 1):
         count = i + 1
         call = API_Connect(udid, list_peak_times[i], list_peak_times[count],
-                           'ne,ns,nw,es,ew', '2').api_request()
+                           'ne,ns,nw,es,ew,en,sw,sn,se,wn,we,ws,nrl,nlr,erl,elr,srl,slr,wrl,wlr', '2').api_request()
         hourly_query_list.append(call)  # list containing hourly aggregation for all the days
 
     # Assigning values to analytics 1-11 #
