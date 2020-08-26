@@ -241,10 +241,16 @@ class API_Connect():
                 temp["south"]+=all_approach[key]["south"]
                 temp["east"]+=all_approach[key]["east"]
                 temp["west"]+=all_approach[key]["west"]
-        temp["north"]/=no_of_weekdays
-        temp["south"]/=no_of_weekdays
-        temp["east"]/=no_of_weekdays
-        temp["west"]/=no_of_weekdays
+        if no_of_weekdays != 0:
+            temp["north"]/=no_of_weekdays
+            temp["south"]/=no_of_weekdays
+            temp["east"]/=no_of_weekdays
+            temp["west"]/=no_of_weekdays
+        else:
+            temp["north"]= 0
+            temp["south"]= 0
+            temp["east"]= 0
+            temp["west"]= 0
         return temp #{"north":0 ,"south":0 ,"east":0 ,"west":0}
 
     # Simplified Mode Item No.6
