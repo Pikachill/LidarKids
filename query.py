@@ -184,15 +184,22 @@ def mode2_query(udid,mode,d1,t1,d2,t2,a,f,file_path_name):
     mode_2_request = API_Connect(udid, d1, d2, f, a, t1, t2)
 
     # Getting unlimited range for all types of aggregation
-    list_time = mode_2_request.time_phrase(2)
-    print(list_time)
-    unlimited_query = []
+    if a == 1 or a == 2:
+        list_time = mode_2_request.time_phrase(2)
+        print(list_time)
+        unlimited_query = []
 
-    for index in range(len(list_time) - 1):
-        count = index + 1
-        queries = API_Connect(udid, list_time[index], list_time[count], f, a).api_request()
-        unlimited_query.append(queries)
+        for index in range(len(list_time) - 1):
+            count = index + 1
+            queries = API_Connect(udid, list_time[index], list_time[count], f, a).api_request()
+            unlimited_query.append(queries)
+
+    else:
+        daily_monthly = mode_2_request.api_request()
 
     # Printing Mode 2 Results #
-    print(json.dumps(unlimited_query, indent=2))
+    if a == 1 or a == 2:
+        print(json.dumps(unlimited_query, indent=2))
+    else:
+        print(json.dumps(daily_monthly, indent=2))
     # csv export #
