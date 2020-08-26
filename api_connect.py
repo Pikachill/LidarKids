@@ -71,7 +71,7 @@ class API_Connect():
             count += 1
 
         if mode == 2:
-            time_skip.append(end_date.date() + self.ttime)
+            time_skip.append(self.tdate + self.ttime)
 
         return time_skip  # generate a list of timestamps for 0:00 on each day in the range
 
