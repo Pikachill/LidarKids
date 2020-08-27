@@ -195,13 +195,12 @@ def mode2_query(udid, mode, d1, t1, d2, t2, a, f, file_path_name):
     # Getting unlimited range for all types of aggregation
     if a == 1 or a == 2:
         list_time = mode_2_request.time_phrase(2)
-        print(list_time)
-        unlimited_query = []
+        unlimited_query = {}
 
         for index in range(len(list_time) - 1):
             count = index + 1
             queries = API_Connect(udid, list_time[index], list_time[count], f, a).api_request()
-            unlimited_query.append(queries)
+            unlimited_query.update(queries)
 
     elif a == 3 or a == 4:
         daily_monthly = API_Connect(udid, start_date, end_date, f, a).api_request()
