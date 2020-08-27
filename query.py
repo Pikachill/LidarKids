@@ -78,10 +78,11 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
     (most_used_lane, least_used_lane) = daily_request.sim_lane_sum(query)
 
     # 4 Daily Average Total Traffic Flow
-    daily_average = daily_request.sim_avg_daily_traffic_flow(daily_total)
+    daily_average_num = daily_request.sim_avg_daily_traffic_flow(daily_total)
 
     # 5 Weekday Average Approach Flow
-    weekday_flow = daily_request.sim_weekday_flow(all_approach)
+    weekday_flow = {" ": "Weekday Average Daily Approach Flow"}
+    weekday_flow.update(daily_request.sim_weekday_flow(all_approach))
 
     # 8-11 The Most and Least Used Sidewalks
     (daily_crosswalk_flow, most_used_crosswalk, least_used_crosswalk) = daily_request.sim_ped_xing_approaches(query)
@@ -117,7 +118,7 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
     print(json.dumps(least_used_lane, indent=2))
 
     print("Average daily traffic flow:")
-    print(daily_average)
+    print(daily_average_num)
 
     # print("Average weekday daily traffic flow: ")
     print(json.dumps(weekday_flow, indent=2))
@@ -149,6 +150,9 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
     # CSV Export #
     if file_path_name != "None":
         analyzed_data = {}
+        daily_average = {"  ":" ", "Daily Average Traffic Flow:":daily_average_num}
+        daily_total.update(daily_average)
+        daily_total.update(weekday_flow)
         analyzed_data['Daily Sum'] = daily_total
         analyzed_data['Ped Daily Sum'] = daily_total_ped
         analyzed_data['1st Peak Hour'] = report_peak_hours_one
