@@ -313,6 +313,11 @@ class API_Connect():
 
         return (all_approach_sum, most_used_approach, least_used_approach)
 
-    def convertToCSV(self, data, export_file_path):
-        r = pd.DataFrame.from_dict(data)
-        r.to_csv(export_file_path)
+    def convertToCSV(self, data, export_file_path, is_mode_two=False):
+        
+        if is_mode_two == False:
+            r = pd.DataFrame.from_dict(data)
+            r.to_csv(export_file_path)
+        else:
+            r = pd.DataFrame.from_dict(data, orient="index")
+            r.to_csv(export_file_path)
