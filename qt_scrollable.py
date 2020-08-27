@@ -264,6 +264,14 @@ class Ui_MainWindow():
         self.Step1toolButtonLayout2.clicked.connect(self.step1_2clicked)
         self.Step8pushButtonConfirmQuery.clicked.connect(self.step8clicked)
 
+        #setting default options for radio buttons
+        # self.Step2radioButtonMode1.setCheckable(True)
+        # self.Step2radioButtonMode1.setChecked(True)
+        # self.Step5radioButton3.setCheckable(True)
+        # self.Step5radioButton3.setChecked(True)
+        # self.Step7radioButtondisplay.setCheckable(True)
+        # self.Step7radioButtondisplay.setChecked(True)
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Aggregated Data Request"))
@@ -333,22 +341,41 @@ class Ui_MainWindow():
 # global function to pull values based on GUI input
 def pull_val_from_GUI(ui):
     # Step 1 Select Location (UDID) - defines udid
-    if ui.Step1radioButton1.isChecked():
+    if ui.Step1radioButton1.isChecked()==False and ui.Step1radioButton2.isChecked()==False:
+        udid = 'None'
+    elif ui.Step1radioButton1.isChecked():
         udid = 'BCT_3D_5G_0101001'
     elif ui.Step1radioButton2.isChecked():
         udid = 'BCT_3D_5G_0101002'
 
     # Step 2 Select Data Mode - defines mode
-    if ui.Step2radioButtonMode1.isChecked():
+    if ui.Step2radioButtonMode1.isChecked() == False and ui.Step2radioButtonMode2.isChecked() == False:
+        mode = 'None'
+    elif ui.Step2radioButtonMode1.isChecked():
         mode = 1
     elif ui.Step2radioButtonMode2.isChecked():
         mode = 2
 
     # Step 3 Enter Date and/or Time Range - defines d1,t1,d2,t2
-    d1 = ui.Step3d1Enter.text()  # format: YYYY-MM-DD
-    t1 = ui.Step3t1Enter.text()  # format: THH:MM:SS
-    d2 = ui.Step3d2Enter.text()
-    t2 = ui.Step3t2Enter.text()
+    if ui.Step3d1Enter.text() == "":
+        d1 = 'None'
+    else: 
+        d1 = ui.Step3d1Enter.text()  # format: YYYY-MM-DD
+
+    if ui.Step3t1Enter.text() == "":
+        t1 = 'None'
+    else: 
+        t1 = ui.Step3t1Enter.text()  # format: THH:MM:SS
+
+    if ui.Step3d2Enter.text() == "":
+        d2 = 'None'
+    else: 
+        d2 = ui.Step3d2Enter.text()  # format: YYYY-MM-DD
+
+    if ui.Step3t2Enter.text() == "":
+        t2 = 'None'
+    else: 
+        t2 = ui.Step3t2Enter.text()  # format: THH:MM:SS   
 
     # Step 4 Input Threshold - defines threshold
     if ui.Step4thresholdEnter.text() == "":
@@ -357,7 +384,10 @@ def pull_val_from_GUI(ui):
         threshold = int(ui.Step4thresholdEnter.text())
 
     # Step 5 Select Aggregation Interval (Mode 2 Only) - defines a
-    if ui.Step5radioButton1.isChecked():
+    if (ui.Step5radioButton1.isChecked() == False and ui.Step5radioButton2.isChecked()==False and
+        ui.Step5radioButton3.isChecked()==False and ui.Step5radioButton4.isChecked()==False):
+        a = "None"
+    elif ui.Step5radioButton1.isChecked():
         a = 1
     elif ui.Step5radioButton2.isChecked():
         a = 2
@@ -365,9 +395,6 @@ def pull_val_from_GUI(ui):
         a = 3
     elif ui.Step5radioButton4.isChecked():
         a = 4
-    else:
-        a = 0
-
 
     # Step 6 Select Output Items (Mode 2 Only) - defines f
     # vehicle directions
@@ -478,9 +505,9 @@ def pull_val_from_GUI(ui):
                  len(i) > 0)  # a string that contains all the selected directions seperated by comma for API call
 
     # Step 7 Select Output Format
-    if ui.Step7radioButtondisplay.isChecked() == True:
-        file_path_name = "None"
-    elif ui.Step7radioButtoncsv.isChecked() == True:
+    # if ui.Step7radioButtoncsv.isChecked()==False and ui.Step7radioButtondisplay.isChecked()==False:
+    file_path_name = "None"
+    if ui.Step7radioButtoncsv.isChecked() == True:
         filename = QtWidgets.QFileDialog.getSaveFileName(None, "Save Your .CSV File", "", 
                                     "*.csv") #e.g. ('/Users/colleenqiu/Desktop/hello.csv', '*.csv')
         file_path_name = filename[0] 
