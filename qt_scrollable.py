@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-#from PIL import Image
+from PIL import Image
 
 
 class Ui_MainWindow():
