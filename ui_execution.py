@@ -29,14 +29,14 @@ if __name__ == "__main__":
         print ("Please enter a start time.")
     if mode == 2 and t2 == 'None':
         print ("Please enter an end time.")
-    if a == 'None':
+    if mode == 2 and a == 'None':
         print ("Please select an aggregation type.")
     if mode == 2 and f == '':
         print ("Please select directions.")
 
     # executes query functions based on the selected mode
-    if udid!= 'None' and mode != 'None' and d1 != 'None' and d2 != 'None' and a!= 'None':
+    if udid!= 'None' and mode != 'None' and d1 != 'None' and d2 != 'None':
         if mode == 1:
             mode1_query(udid, d1, d2, threshold, file_path_name)
-        elif mode == 2 and t1!= 'None' and t2 != 'None' and f != '':
+        elif mode == 2 and t1!= 'None' and t2 != 'None' and a!= 'None' and f != '':
             mode2_query(udid, mode, d1, t1, d2, t2, a, f, file_path_name)
