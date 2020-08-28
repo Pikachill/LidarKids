@@ -29,7 +29,7 @@ if __name__ == "__main__":
         print ("Please enter a start time.")
     if mode == 2 and t2 == 'None':
         print ("Please enter an end time.")
-    if a == 'None':
+    if mode == 2 and a == 'None':
         print ("Please select an aggregation type.")
     if mode == 2 and f == '':
         print ("Please select directions.")
