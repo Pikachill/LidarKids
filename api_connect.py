@@ -1,4 +1,6 @@
 import json
+import math
+
 import requests
 from heapq import nlargest
 from heapq import nsmallest
@@ -26,8 +28,10 @@ class API_Connect():
                             's2': ['sw', 'se', 'sn'], 'e1': ['en', 'ew'], 'e2': ['es'], 'e3': ['ne', 'we', 'se'],
                             'w1': ['we', 'ws'], 'w2': ['wn'], 'w3': ['nw', 'ew', 'sw']}
     ped_direction = ['nrl', 'nlr', 'erl', 'elr', 'srl', 'slr', 'wrl', 'wlr']
-    approach_out = {'north':['ns','nw','ne'],'south':['sn','se','sw'],'east':['ew','en','es'],'west':['we','ws','wn']}
-    approach_in = {'north':['en','sn','wn'],'south':['ns','es','ws'],'east':['ne','se','we'],'west':['nw','ew','sw']}
+    approach_out = {'north': ['ns', 'nw', 'ne'], 'south': ['sn', 'se', 'sw'], 'east': ['ew', 'en', 'es'],
+                    'west': ['we', 'ws', 'wn']}
+    approach_in = {'north': ['en', 'sn', 'wn'], 'south': ['ns', 'es', 'ws'], 'east': ['ne', 'se', 'we'],
+                   'west': ['nw', 'ew', 'sw']}
     side_walk_approach = ['n', 's', 'e', 'w']
 
     # initiates all the attributes that belong to the object "self"
@@ -46,8 +50,34 @@ class API_Connect():
         response = requests.get('https://api.bluecitytechnology.com/s/ad', params=parameters,
                                 auth=BearerAuth(self.token))
         dictionary_response = json.loads(response.text)  # extracts the response in "text" format
-        
-        return dictionary_response['values']  # the responses contains other info, but 'values' contains the date and the flows
+
+        return dictionary_response[
+            'values']  # the responses contains other info, but 'values' contains the date and the flows
+
+    def day_phrase(self):
+        start_date = datetime.datetime.fromisoformat(self.fdate)
+        end_date = datetime.datetime.fromisoformat(self.tdate)
+        difference = end_date - start_date
+        calls = math.ceil(difference.days / 31)
+        count = 0
+
+        time_skip = []
+
+        if calls > 1:
+            for n in range(calls + 1):
+                temp = start_date.date() + datetime.timedelta(days=count)
+                date_string = temp.strftime('%Y-%m-%d')
+                ret_val = date_string + self.ftime
+                time_skip.append(ret_val)
+                count += 31
+
+            return time_skip
+
+        else:
+            time_skip.append(self.fdate + self.ftime)
+            time_skip.append(self.tdate + self.ttime)
+
+            return time_skip
 
     # constructs date type objects from the "YYYY-MM-DD" input strings
     def time_phrase(self, mode):
@@ -60,7 +90,7 @@ class API_Connect():
             additional_days = 2
         elif mode == 2:
             additional_days = 0
-            
+
         time_skip = []
 
         for increment in range(difference.days + additional_days):  # difference is an object with class datetime
@@ -146,7 +176,7 @@ class API_Connect():
         return ret_val
 
     # Simplified Mode Item No.2 - Approach Flows
-    def sim_peak_approach(self,result):
+    def sim_peak_approach(self, result):
         all_approach = {}
         most_in = {}
         most_in_val = {}
@@ -165,14 +195,14 @@ class API_Connect():
                     if field in result[date]:
                         temp = result[date][field]
                         total += temp
-                
+
                 temp_dict[approach] = total
             most_used = nlargest(1, temp_dict, key=temp_dict.get)
 
             all_approach[date] = temp_dict
             most_out[date] = most_used[0]
             most_out_val[date] = temp_dict[most_used[0]]
-        
+
         # Approach In
         for date in result:
             temp_dict = {}
@@ -184,14 +214,14 @@ class API_Connect():
                     if field in result[date]:
                         temp = result[date][field]
                         total += temp
-                
+
                 temp_dict[approach] = total
             most_used = nlargest(1, temp_dict, key=temp_dict.get)
 
             most_in[date] = most_used[0]
             most_in_val[date] = temp_dict[most_used[0]]
 
-        return (most_in,most_in_val,most_out,most_out_val,all_approach)
+        return (most_in, most_in_val, most_out, most_out_val, all_approach)
 
     # Simplified Mode Item No.3 - Lane Flows
     def sim_lane_sum(self, result):
@@ -227,31 +257,31 @@ class API_Connect():
         no_of_days = len(daily_sum)
         total = sum(daily_sum.values())
         daily_average = total / no_of_days
-        return daily_average #an interger
+        return daily_average  # an interger
 
     # Simplified Mode Item No.5
-    def sim_weekday_flow(self,all_approach):
-        no_of_weekdays=0
-        temp={"north":0 ,"south":0 ,"east":0 ,"west":0}
+    def sim_weekday_flow(self, all_approach):
+        no_of_weekdays = 0
+        temp = {"north": 0, "south": 0, "east": 0, "west": 0}
         for key in all_approach:
             date = datetime.date.fromisoformat(key)
             if (date.weekday() < 5):
                 no_of_weekdays += 1
-                temp["north"]+=all_approach[key]["north"]
-                temp["south"]+=all_approach[key]["south"]
-                temp["east"]+=all_approach[key]["east"]
-                temp["west"]+=all_approach[key]["west"]
+                temp["north"] += all_approach[key]["north"]
+                temp["south"] += all_approach[key]["south"]
+                temp["east"] += all_approach[key]["east"]
+                temp["west"] += all_approach[key]["west"]
         if no_of_weekdays != 0:
-            temp["north"]/=no_of_weekdays
-            temp["south"]/=no_of_weekdays
-            temp["east"]/=no_of_weekdays
-            temp["west"]/=no_of_weekdays
+            temp["north"] /= no_of_weekdays
+            temp["south"] /= no_of_weekdays
+            temp["east"] /= no_of_weekdays
+            temp["west"] /= no_of_weekdays
         else:
-            temp["north"]= 0
-            temp["south"]= 0
-            temp["east"]= 0
-            temp["west"]= 0
-        return temp #{"north":0 ,"south":0 ,"east":0 ,"west":0}
+            temp["north"] = 0
+            temp["south"] = 0
+            temp["east"] = 0
+            temp["west"] = 0
+        return temp  # {"north":0 ,"south":0 ,"east":0 ,"west":0}
 
     # Simplified Mode Item No.6
     def sim_count_hour_above_threshold(self, result, threshold, ped_xing_peak=False):
@@ -314,7 +344,7 @@ class API_Connect():
         return (all_approach_sum, most_used_approach, least_used_approach)
 
     def convertToCSV(self, data, export_file_path, is_mode_two=False):
-        
+
         if is_mode_two == False:
             r = pd.DataFrame.from_dict(data)
             r.to_csv(export_file_path)
