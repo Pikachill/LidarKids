@@ -64,12 +64,14 @@ class API_Connect():
         time_skip = []
 
         if calls > 1:
-            for n in range(calls + 1):
+            for n in range(calls):
                 temp = start_date.date() + datetime.timedelta(days=count)
                 date_string = temp.strftime('%Y-%m-%d')
                 ret_val = date_string + self.ftime
                 time_skip.append(ret_val)
                 count += 31
+
+            time_skip.append(self.tdate + self.ttime)
 
             return time_skip
 
