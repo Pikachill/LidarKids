@@ -332,11 +332,11 @@ class Ui_MainWindow():
 
     def step1_1clicked(self):
         image = Image.open('layout1.png')
-        #image.show()
+        image.show()
     
     def step1_2clicked(self):
         image = Image.open('layout2.png')
-        #image.show()
+        image.show()
         
 # global function to pull values based on GUI input
 def pull_val_from_GUI(ui):
