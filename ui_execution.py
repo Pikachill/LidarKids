@@ -33,6 +33,8 @@ if __name__ == "__main__":
         print ("Please select an aggregation type.")
     if mode == 2 and f == '':
         print ("Please select directions.")
+    if file_path_name == '':
+        print ("Please select output type.")
 
     # executes query functions based on the selected mode
     if udid!= 'None' and mode != 'None' and d1 != 'None' and d2 != 'None':
