@@ -332,11 +332,11 @@ class Ui_MainWindow():
 
     def step1_1clicked(self):
         image = Image.open('layout1.png')
-        #image.show()
+        image.show()
     
     def step1_2clicked(self):
         image = Image.open('layout2.png')
-        #image.show()
+        image.show()
         
 # global function to pull values based on GUI input
 def pull_val_from_GUI(ui):
@@ -506,7 +506,9 @@ def pull_val_from_GUI(ui):
 
     # Step 7 Select Output Format
     # if ui.Step7radioButtoncsv.isChecked()==False and ui.Step7radioButtondisplay.isChecked()==False:
-    file_path_name = "None"
+    file_path_name = ''
+    if ui.Step7radioButtondisplay.isChecked() == True:
+        file_path_name = "None"
     if ui.Step7radioButtoncsv.isChecked() == True:
         filename = QtWidgets.QFileDialog.getSaveFileName(None, "Save Your .CSV File", "", 
                                     "*.csv") #e.g. ('/Users/colleenqiu/Desktop/hello.csv', '*.csv')
