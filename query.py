@@ -3,7 +3,6 @@
 
 import json
 import requests
-from tkinter import filedialog
 from api_connect import *
 
 
@@ -16,10 +15,16 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
     start_date = d1 + 'T00:00:00'
     end_date = d2 + 'T00:00:00'
 
-    daily_request = API_Connect(udid, start_date, end_date,
-                                'ne,ns,nw,es,ew,en,sw,sn,se,wn,we,ws,nrl,nlr,erl,elr,srl,slr,wrl,wlr',
-                                '3')
-    query = daily_request.api_request()  # dictionary containing API call for daily aggregation
+    query = {}
+    daily_request = API_Connect(udid, start_date, end_date,'ne,ns,nw,es,ew,en,sw,sn,se,wn,we,ws,nrl,nlr,erl,elr,srl,slr,wrl,wlr','3')
+    list_time = daily_request.day_phrase()
+    
+    for index in range(len(list_time) - 1):
+        count = index + 1
+        daily_queries = daily_request.api_request()
+        query.update(daily_queries)
+    
+    # query = daily_request.api_request()  # dictionary containing API call for daily aggregation
     # print(json.dumps(query,indent=2))
 
     # hourly API request
@@ -51,7 +56,6 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
     report_peak_hours_ped_val_two = {}
     report_peak_hours_ped_val_three = {}
     report_threshold_hours = {}
-    report_threshold_hours_ped = {}
     for index in hourly_query_list:  # index contains one days hourly aggregated data
         date = daily_request.extract_date(index)
         top_peak_hours = daily_request.sim_peak_hours(index)
@@ -69,7 +73,6 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
         report_peak_hours_ped_val_two.update(top_ped_peak_hours[3])
         report_peak_hours_ped_three.update(top_ped_peak_hours[4])
         report_peak_hours_ped_val_three.update(top_ped_peak_hours[5])
-        report_threshold_hours_ped[date] = daily_request.sim_count_hour_above_threshold(index, threshold, True)
 
     # 2 Daily Approach Flow
     (most_in, most_in_val, most_out, most_out_val, all_approach) = daily_request.sim_peak_approach(query)
@@ -153,26 +156,25 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
         daily_average = {"  ":" ", "Daily Average Traffic Flow:":daily_average_num}
         daily_total.update(daily_average)
         daily_total.update(weekday_flow)
-        analyzed_data['Daily Sum'] = daily_total
+        analyzed_data['Veh Daily Sum'] = daily_total
         analyzed_data['Ped Daily Sum'] = daily_total_ped
-        analyzed_data['1st Peak Hour'] = report_peak_hours_one
-        analyzed_data['1st Peak Hour Value'] = report_peak_hours_val_one
-        analyzed_data['2nd Peak Hour'] = report_peak_hours_two
-        analyzed_data['2nd Peak Hour Value'] = report_peak_hours_val_two
-        analyzed_data['3rd Peak Hour'] = report_peak_hours_three
-        analyzed_data['3rd Peak Hour Value'] = report_peak_hours_val_three
-        analyzed_data['1st Pedestrian Peak Hour'] = report_peak_hours_ped_one
-        analyzed_data['1st Pedestrian Peak Hour Value'] = report_peak_hours_ped_val_one
-        analyzed_data['2nd Pedestrian Peak Hour'] = report_peak_hours_ped_two
-        analyzed_data['2nd Pedestrian Peak Hour Value'] = report_peak_hours_ped_val_two
-        analyzed_data['3rd Pedestrian Peak Hour'] = report_peak_hours_ped_three
-        analyzed_data['3rd Pedestrian Peak Hour Value'] = report_peak_hours_ped_val_three
-        analyzed_data['Hours Over Threshold'] = report_threshold_hours
-        analyzed_data['Hours Over Threshold Pedestrian'] = report_threshold_hours_ped
-        analyzed_data['Most In Flow Approach'] = most_in
-        analyzed_data['Most In Flow Approach Value'] = most_in_val
-        analyzed_data['Most Out Flow Approach'] = most_out
-        analyzed_data['Most Out Flow Approach Value'] = most_out_val
+        analyzed_data['1st Veh Peak Hour'] = report_peak_hours_one
+        analyzed_data['1st Veh Peak Hour Value'] = report_peak_hours_val_one
+        analyzed_data['2nd Veh Peak Hour'] = report_peak_hours_two
+        analyzed_data['2nd Veh Peak Hour Value'] = report_peak_hours_val_two
+        analyzed_data['3rd Veh Peak Hour'] = report_peak_hours_three
+        analyzed_data['3rd Veh Peak Hour Value'] = report_peak_hours_val_three
+        analyzed_data['1st Ped Peak Hour'] = report_peak_hours_ped_one
+        analyzed_data['1st Ped Peak Hour Value'] = report_peak_hours_ped_val_one
+        analyzed_data['2nd Ped Peak Hour'] = report_peak_hours_ped_two
+        analyzed_data['2nd Ped Peak Hour Value'] = report_peak_hours_ped_val_two
+        analyzed_data['3rd Ped Peak Hour'] = report_peak_hours_ped_three
+        analyzed_data['3rd Ped Peak Hour Value'] = report_peak_hours_ped_val_three
+        analyzed_data['Hours Over Threshold Veh'] = report_threshold_hours
+        analyzed_data['Most In Flow Approach Veh'] = most_in
+        analyzed_data['Most In Flow Approach Value Veh'] = most_in_val
+        analyzed_data['Most Out Flow Approach Veh'] = most_out
+        analyzed_data['Most Out Flow Approach Value Veh'] = most_out_val
         analyzed_data['Most Used Lane'] = most_used_lane
         analyzed_data['Least Used Lane'] = least_used_lane
         analyzed_data['Most Used Crosswalk'] = most_used_crosswalk
