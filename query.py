@@ -21,7 +21,7 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
     
     for index in range(len(list_time) - 1):
         count = index + 1
-        daily_queries = daily_request.api_request()
+        daily_queries = API_Connect(udid, list_time[index], list_time[count],'ne,ns,nw,es,ew,en,sw,sn,se,wn,we,ws,nrl,nlr,erl,elr,srl,slr,wrl,wlr','3').api_request()
         query.update(daily_queries)
     
     # query = daily_request.api_request()  # dictionary containing API call for daily aggregation
@@ -33,8 +33,7 @@ def mode1_query(udid, d1, d2, threshold, file_path_name):
 
     for i in range(len(list_peak_times) - 1):
         count = i + 1
-        call = API_Connect(udid, list_peak_times[i], list_peak_times[count],
-                           'ne,ns,nw,es,ew,en,sw,sn,se,wn,we,ws,nrl,nlr,erl,elr,srl,slr,wrl,wlr', '2').api_request()
+        call = API_Connect(udid, list_peak_times[i], list_peak_times[count],'ne,ns,nw,es,ew,en,sw,sn,se,wn,we,ws,nrl,nlr,erl,elr,srl,slr,wrl,wlr', '2').api_request()
         hourly_query_list.append(call)  # list containing hourly aggregation for all the days
 
     # Assigning values to analytics 1-11 #
