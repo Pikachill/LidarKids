@@ -86,6 +86,8 @@ class API_Connect():
         start_date = datetime.datetime.fromisoformat(self.fdate)
         end_date = datetime.datetime.fromisoformat(self.tdate)
         difference = end_date - start_date
+        if start_date == end_date:
+            difference = datetime.timedelta(days=1, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0)
         count = 0
 
         if mode == 1:
@@ -327,14 +329,17 @@ class API_Connect():
         least_used_approach = {}
         ped_direction = ['nrl', 'nlr', 'srl', 'slr', 'erl', 'elr', 'wrl', 'wlr']
 
+        print(result)
+
         for date in result:
             temp_dict = {}
             for approaches in self.side_walk_approach:
                 total = 0
                 for index in ped_direction:
                     if index.startswith(approaches):
-                        temp = result[date][index]
-                        total += temp
+                        if index in result[date]:
+                            temp = result[date][index]
+                            total += temp
                 temp_dict[approaches] = total
             most_used = nlargest(1, temp_dict, key=temp_dict.get)
             least_used = nsmallest(1, temp_dict, key=temp_dict.get)
